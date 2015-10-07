@@ -1,0 +1,27 @@
+{
+  "name": "doublelinkedlist",
+  "version": "1.0.0",
+  "description": "js practice with datastructures",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brayzen/datastructures.git"
+  },
+  "keywords": [
+    "Double",
+    "LInked",
+    "List"
+  ],
+  "author": "Brian Ray",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/brayzen/datastructures/issues"
+  },
+  "homepage": "https://github.com/brayzen/datastructures#readme",
+  "devDependencies": {
+    "mocha": "^2.3.3"
+  }
+}
