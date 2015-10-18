@@ -90,6 +90,7 @@ list_1.to_s
 
 list_1.remove(8)
 list_1.remove("brian")
+list_1.remove("Bray")
 
 
 
