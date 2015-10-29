@@ -12,35 +12,22 @@ class AppleTree
   end
 
   def inorder
-    if @current.left
-      @current.left.inorder
-    end
+    @current.left.inorder if @current.left
     puts @current.name
-    if @current.right
-      @current.right.inorder
-    end
+    @current.right.inorder if @current.right
   end
 
   def preorder
     puts @current.name
-    if @current.left
-      @current.left.inorder
-    end
-    if @current.right
-      @current.right.inorder
-    end
+    @current.left.preorder if @current.left
+    @current.right.preorder if @current.right
   end
 
   def postorder
-    if @current.left
-      @current.left.inorder
-    end
-    if @current.right
-      @current.right.inorder
-    end
+    @current.left.postorder if @current.left
+    @current.right.postorder if @current.right
     puts @current.name
-  end
-
+  endgs
 
 end
 
