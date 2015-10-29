@@ -1,5 +1,4 @@
 var BstNode = require('./BstNode.js')
-console.log(BstNode);
 
 var BinSearchTree = function(values){
   this.vals = values != null ? values : [];
@@ -39,16 +38,18 @@ BinSearchTree.prototype.insert_one = function(value){
       if (current.left) {
         current = current.left;
       } else {
-        current.left = new BstNode(value);
+        current.left = new BstNode(value, null, null, (current.depth));
         this.size++;
+        current.left.depth++;
         break;
       }
     } else if (value > current.val) {
       if (current.right) {
         current = current.right;
       } else {
-        current.right = new BstNode(value);
+        current.right = new BstNode(value, null, null, (current.depth));
         this.size++;
+        current.right.depth++;
         break;
       }
     } else if (value === current.val) {
@@ -59,39 +60,23 @@ BinSearchTree.prototype.insert_one = function(value){
 
 BinSearchTree.prototype.balance = function(){
   var current = this.root;
-  console.log(current);
-  bstArray = [];
-
-  var trav = function(node){
-    if(node){
-      trav(node.left);
-      if(node.val != null){
-        bstArray.push(node.val);
-      };
-      trav(node.right);
-    };
-  };
-  trav(current);
-  console.log(bstArray + ' is the SORTED- Pre-ordered Array');
-
-  orderedArray = [];
-  var balOrder = function(bstArray){
-    if (bstArray.length > 0) {
-      var middle = Math.ceil(bstArray.length/2 - 1) ;
-      orderedArray.push(bstArray[middle]);
-      var left = (bstArray.slice(0, middle));
-      var right = bstArray.slice(middle + 1);
-      // console.log(orderedArray + ' is the ORDERED ARRAY');
+  var bstArray = this.inOrderTrav();
+  midOrderArr = [];
+  var balOrder = function(arrayBST){
+    if (arrayBST.length > 0) {
+      var middle = Math.ceil(arrayBST.length/2 - 1) ;
+      midOrderArr.push(arrayBST[middle]);
+      var left = arrayBST.slice(0, middle);
+      var right = arrayBST.slice(middle + 1);
       balOrder(left);
       balOrder(right);
     };
-    return orderedArray;
+    return midOrderArr;
   };
-
   balOrder(bstArray);
-  console.log(orderedArray + ' is the FINAL ordered array');
+  // console.log(midOrderArr + ' is the MIDDLE ordered array');
   var protoBST = new BinSearchTree();
-  protoBST.insert(orderedArray);
+  protoBST.insert(midOrderArr);
   return protoBST
 };
 
@@ -112,60 +97,82 @@ BinSearchTree.prototype.contains = function(val){
   return false;
 };
 
+BinSearchTree.prototype.postOrderTrav = function(){
+  var bstArray = [];
+  var rootNode = this.root;
+  var postOrder = function(node){
+    if(node){
+      postOrder(node.left);
+      postOrder(node.right);
+      if(node.val != null){
+        bstArray.push(node.val);
+      };
+    };
+  };
+  postOrder(rootNode);
+  // console.log(bstArray + ' $$$ but this is POST-ORDER ');
+  return bstArray;
+};
+
+BinSearchTree.prototype.inOrderTrav = function(){
+  var bstArray = [];
+  var rootNode = this.root;
+  var inOrder = function(node){
+    if(node){
+      inOrder(node.left);
+      if(node.val != null){
+        bstArray.push(node.val);
+      };
+      inOrder(node.right);
+    };
+  };
+  inOrder(rootNode);
+  // console.log(bstArray + " ### this is the IN-ORDER array")
+  return bstArray;
+};
+
+BinSearchTree.prototype.preOrderTrav = function(){
+  var bstArray = [];
+  var rootNode = this.root;
+  var preOrder = function(node){
+    if(node){
+      if(node.val != null){
+        bstArray.push(node.val);
+      };
+      preOrder(node.left);
+      preOrder(node.right);
+    };
+  };
+  preOrder(rootNode);
+  // console.log(bstArray + " &&& this is the PRE-ORDER array")
+  return bstArray;
+
+};
+
+BinSearchTree.prototype.levelOrderTrav = function(){
+  var queue = [];
+  queue.push(this.root);
+  finalArr = [];
+
+  do {
+    var len = queue.length;
+
+    for( var i = 0; i < len; i++ ){
+      var index = queue.shift();
+      finalArr.push( index.val )
+      var node = index;
+      if( node.left ) {
+        queue.push( node.left );
+      }
+      if( node.right ) {
+        queue.push( node.right );
+      }
+    }
+
+  } while( queue.length !== 0 );
+  console.log( finalArr );
+  return ( finalArr );
+};
 
 
-
-
-
-
-btree = new BinSearchTree();
-btree.insert_one('r');
-btree.insert_one('c');
-btree.insert_one('t');
-btree.insert_one('k');
-btree.insert_one('s');
-btree.insert_one('d');
-btree.insert_one('e');
-btree.insert_one('g');
-btree.insert_one('u');
-btree.insert_one('a');
-
-// console.log(btree);
-btree.balance();
-// btree.contains('r');
-// btree.balance();
-
-// btree.contains('null');
-// // // btree.contains(null);
-// btree.contains('t');
-// btree.contains('b');
-
-// 2nd tree tests
-array1 = [7, 5, 3, 5, 6, 2, 8, 9];
-btree2 = new BinSearchTree();
-btree2.insert(array1);
-// console.log(btree2);
-// btree3 = new BinSearchTree();
-// btree3.insert(btree2.balance());
-btree3 = btree2.balance();
-btree3.contains(6);
-btree3.contains(5);
-btree3.contains(9);
-btree3.contains(13);
-btree3.contains(0);
-
-// console.log(btree2);
-
-// btree2.contains(5);
-// btree2.contains(10);
-// console.log(btree2.balance());
-// btree3 = new BinSearchTree();
-// btree3.insert(btree2.balance());
-// console.log(btree3);
-// btree3.contains(5);
-// console.log(btree2);
-
-// console.log(btree.right);
-
-
-// module.exports = BinSearchTree;
+module.exports = BinSearchTree;
